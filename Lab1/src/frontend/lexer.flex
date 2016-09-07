@@ -61,44 +61,44 @@ Alpha = [a-zA-Z_]
 "while"					{return token(WHILE);}
 		
 // punctuation symbols
-","						{return token(COMMA);} /* , */
-"["						{return token(LBRACKET);} /* [ */
-"{"						{return token(LCURLY);} /* { */
-"("						{return token(LPAREN);} /* ( */
-"]"						{return token(RBRACKET);} /* ] */
-"}"						{return token(RCURLY);} /* } */
-")"						{return token(RPAREN);} /* ) */
+","						{return token(COMMA);}     /* , */
+"["						{return token(LBRACKET);}  /* [ */
+"{"						{return token(LCURLY);}    /* { */
+"("						{return token(LPAREN);}    /* ( */
+"]"						{return token(RBRACKET);}  /* ] */
+"}"						{return token(RCURLY);}    /* } */
+")"						{return token(RPAREN);}    /* ) */
 ";"						{return token(SEMICOLON);} /* ; */
 		
 // operators
-"/"						{return token(DIV);} /* / */
-"=="					{return token(EQEQ);} /* == */
-"="						{return token(EQL);} /* = */
-">="					{return token(GEQ);} /* >= */
-">"						{return token(GT);} /* > */
-"<="					{return token(LEQ);} /* <= */
+"/"						{return token(DIV);	   /* / */
+"=="						{return token(EQEQ);}      /* == */
+"="						{return token(EQL);} 	   /* = */
+">="						{return token(GEQ);} 	   /* >= */
+">"						{return token(GT);}        /* > */
+"<="						{return token(LEQ);} 	   /* <= */
 "<"						{return token(LT);}
 "-"						{return token(MINUS);}
-"!="					{return token(NEQ);}
+"!="						{return token(NEQ);}
 "+"						{return token(PLUS);}
 "*"						{return token(TIMES);}
 		
 // identifier
-({Alpha}|"_")({Alpha}|{Digit}|"_")*					{return token(ID,yytext());}
+({Alpha}|"_")({Alpha}|{Digit}|"_")*		{return token(ID,yytext());}
 		
 // literals
-{Digit}+				{return token(INT_LITERAL, yytext());}
+{Digit}+					{return token(INT_LITERAL, yytext());}
 
 /*A string is constructed by one " at the beginning, 
   then it has zero or more escaped character or non-quote character.
   At last, a string ends with a ". */ 
-\"(\\.|[^\"])*\"	        {return token(STRING_LITERAL, yytext());}  
+\"(\\.|[^\"])*\"				{return token(STRING_LITERAL, yytext());}  
 
 
 
 //ignore whitespace
-{WhiteSpace}+           	{/*return nothing*/}
+{WhiteSpace}+           			{/*return nothing*/}
 
 /* You don't need to change anything below this line. */
-.							{ throw new Error("unexpected character '" + yytext() + "'"); }
+.						{ throw new Error("unexpected character '" + yytext() + "'"); }
 <<EOF>>						{ return token(EOF); }
