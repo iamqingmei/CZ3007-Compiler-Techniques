@@ -1,0 +1,183 @@
+// package the generated Java class lives in; no need to change this
+%package "parser";
+
+// name of the generated Java class; no need to change this
+%class "Parser";
+
+// no need to change this either
+%embed {:
+	// turn off automated error recovery
+	@Override
+	protected void recoverFromError(Symbol token, TokenStream in) throws java.io.IOException, Exception {
+		super.recoverFromError(new Symbol(0), in);
+	}
+:};
+
+// the list of all terminals; no need to change this
+%terminals MODULE, INT, VOID, IF, ELSE, WHILE, RETURN, BREAK, BOOLEAN, PUBLIC, TRUE, FALSE,
+           INT_LITERAL, STRING_LITERAL, ID, TYPE, IMPORT,
+           PLUS, MINUS, TIMES, DIV, MOD, EQEQ, NEQ, LEQ, GEQ, LT, GT,
+           LBRACKET, RPAREN, COMMA, RCURLY, LCURLY, SEMICOLON, RBRACKET, LPAREN, EQL;
+           
+// declaration of start symbol; no need to change this
+%goal Module;
+
+// temporary declaration, you can remove this once you have written all other rules
+// %goal Dummy;
+
+/* TODO: Flesh out the rule for Module, and add rules for other nonterminals. Here is an example
+         of a rule you may want to add:
+         
+   Accessibility = PUBLIC
+		  |
+		  ;
+  */
+
+Module = MODULE ID LCURLY Imports Declarations RCURLY;
+Imports = Import Imports
+		|
+		;
+Import = IMPORT ID SEMICOLON ;
+Declarations = Declaration Declarations
+		|
+		;
+Declaration = Function
+		| Field
+		| Type
+		;
+		
+Function = Accessibility TypeName ID LPAREN ParameterList RPAREN LCURLY StatementList RCURLY;
+
+Field = Accessibility TypeName ID SEMICOLON;
+
+Type = Accessibility TYPE ID EQL STRING_LITERAL SEMICOLON;
+
+Accessibility = PUBLIC
+		|
+		;
+		
+TypeName = PrimitiveType
+		| ArrayType
+		| ID
+		;
+		
+PrimitiveType = VOID
+		| BOOLEAN
+		| INT
+		;
+		
+ArrayType = TypeName LBRACKET RBRACKET ;  /*LALR conflict -- need to expand the nonterminal*/
+
+ParameterList = Parameter ParameterTail   
+		|
+		;
+
+ParameterTail = COMMA Parameter ParameterTail
+		|
+		;		
+
+Parameter = TypeName ID;  /* conflict? */
+
+StatementList = Statement StatementList
+		|
+		;
+		
+Statement = TypeName ID SEMICOLON
+		| LCURLY StatementList RCURLY
+		| IF LPAREN Expression RPAREN Statement ELSE Statement    
+		| IF LPAREN Expression RPAREN Statement
+		| WHILE LPAREN Expression RPAREN Statement
+		| BREAK SEMICOLON
+		| RETURN SEMICOLON
+ 		| RETURN Expression SEMICOLON
+ 		| Expression SEMICOLON
+ 		;
+ 
+// An expression is either an assignment or a right hand side expression.
+Expression = Assignment
+		| RHSExpreesion
+		;
+// An assignment is a left hand side expression, followed by a single equals sign, followed by an expression.
+Assignment = LHSExpression EQEQ Expression ;
+// A left hand side expression is either an identifier or an array access. 
+LHSExpression = ID
+		| ArrayAccess 
+		;
+//An array access is a left hand side expression, followed by an opening bracket, followed by an expression, 
+// followed by a closing bracket.
+ArrayAccess = LHSExpression LBRACKET Expression RBRACKET;
+// A right hand side expression is an arithmetic expression, optionally followed by a comparison operator and
+// another arithmetic expression. 
+RHSExpreesion = ArithmeticExpression RHSExTail;
+RHSExTail = ComparisonOp ArithmeticExpression
+		|
+		;
+// A comparison operator is one of EQEQ, NEQ, LT, LEQ, GT, GEQ.
+ComparisonOp = EQEQ
+		| NEQ
+		| LT
+		| LEQ
+		| GT
+		| GEQ
+		;
+// An arithmetic expression is either an arithmetic expression, followed by an additive operator, followed by a
+// term; or just a term. 
+
+ArithmeticExpression = ArithmeticExpression AdditiveOp Term
+		| Term
+		;
+		
+// An additive operator is either PLUS or MINUS.
+AdditiveOp = PLUS
+		| MINUS
+		;
+// A term is either a term, followed by a multiplicative operator, followed by a factor; or just a factor. 
+Term = Term MultiplicativeOp Factor 
+		| Factor
+		;
+// A multiplicative operator is one of TIMES, DIV, MOD.
+MultiplicativeOp = TIMES
+		| DIV
+		| MOD
+		;
+// A factor is either a MINUS followed by a factor, or a primary expression.
+Factor = MINUS Factor
+		| PrimaryExpr
+		;
+// A primary expression is one of the following:
+	// • a left hand side expression;
+	// • a function call: 
+	// • an array expression: an opening bracket, followed by a non-empty list of expressions separated by
+	// comma, followed by a closing bracket;
+	// • a string literal;
+	// • an integer literal;
+PrimaryExpr = LHSExpression
+		| FunctionCall
+		| ArrayExpression
+		| STRING_LITERAL
+		| INT_LITERAL
+		| TRUE
+		| FALSE
+		| LPAREN Expression RPAREN
+		;
+//FunctionCall : an identifier, followed by an opening parenthesis, 
+//followed by a possibly empty list of expressions separated by comma, followed by a closing parenthesis;	
+FunctionCall = ID LPAREN ExpressionList RPAREN;
+ExpressionTail = COMMA Expression ExpressionTail
+		|
+		;
+ExpressionList = Expression ExpressionTail
+		|
+		;
+// an array expression: an opening bracket, followed by a non-empty list of expressions separated by
+// comma, followed by a closing bracket;
+ArrayExpression = LBRACKET Expression ExpressionTail RBRACKET;
+/* Dummy rule to make the lexer compile. Remove this once you have written all other rules. */	  
+Dummy = MODULE INT VOID IF ELSE WHILE RETURN BREAK BOOLEAN PUBLIC TRUE FALSE INT_LITERAL STRING_LITERAL ID TYPE IMPORT
+           PLUS MINUS TIMES DIV MOD EQEQ NEQ LEQ GEQ LT GT LBRACKET RPAREN COMMA RCURLY LCURLY SEMICOLON RBRACKET LPAREN EQL; 
+ 
+/**/
+
+/* Dummy rule to make the lexer compile. Remove this once you have written all other rules. */	  
+Dummy = MODULE INT VOID IF ELSE WHILE RETURN BREAK BOOLEAN PUBLIC TRUE FALSE INT_LITERAL STRING_LITERAL ID TYPE IMPORT
+           PLUS MINUS TIMES DIV MOD EQEQ NEQ LEQ GEQ LT GT LBRACKET RPAREN COMMA RCURLY LCURLY SEMICOLON RBRACKET LPAREN EQL;
