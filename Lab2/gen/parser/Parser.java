@@ -11,54 +11,77 @@ import java.util.ArrayList;
 public class Parser extends beaver.Parser {
 	static public class Terminals {
 		static public final short EOF = 0;
-		static public final short MODULE = 1;
-		static public final short INT = 2;
-		static public final short VOID = 3;
-		static public final short IF = 4;
-		static public final short ELSE = 5;
-		static public final short WHILE = 6;
-		static public final short RETURN = 7;
-		static public final short BREAK = 8;
-		static public final short BOOLEAN = 9;
-		static public final short PUBLIC = 10;
-		static public final short TRUE = 11;
-		static public final short FALSE = 12;
-		static public final short INT_LITERAL = 13;
-		static public final short STRING_LITERAL = 14;
-		static public final short ID = 15;
-		static public final short TYPE = 16;
-		static public final short IMPORT = 17;
-		static public final short PLUS = 18;
-		static public final short MINUS = 19;
-		static public final short TIMES = 20;
-		static public final short DIV = 21;
-		static public final short MOD = 22;
-		static public final short EQEQ = 23;
-		static public final short NEQ = 24;
-		static public final short LEQ = 25;
-		static public final short GEQ = 26;
-		static public final short LT = 27;
-		static public final short GT = 28;
-		static public final short LBRACKET = 29;
-		static public final short RPAREN = 30;
-		static public final short COMMA = 31;
-		static public final short RCURLY = 32;
-		static public final short LCURLY = 33;
-		static public final short SEMICOLON = 34;
-		static public final short RBRACKET = 35;
-		static public final short LPAREN = 36;
-		static public final short EQL = 37;
-	}
-	static public class AltGoals {
-		static public final short Dummy = 38;
+		static public final short ID = 1;
+		static public final short LBRACKET = 2;
+		static public final short LPAREN = 3;
+		static public final short MINUS = 4;
+		static public final short STRING_LITERAL = 5;
+		static public final short INT_LITERAL = 6;
+		static public final short TRUE = 7;
+		static public final short FALSE = 8;
+		static public final short RPAREN = 9;
+		static public final short RCURLY = 10;
+		static public final short VOID = 11;
+		static public final short BOOLEAN = 12;
+		static public final short INT = 13;
+		static public final short LCURLY = 14;
+		static public final short SEMICOLON = 15;
+		static public final short RBRACKET = 16;
+		static public final short IF = 17;
+		static public final short WHILE = 18;
+		static public final short BREAK = 19;
+		static public final short RETURN = 20;
+		static public final short COMMA = 21;
+		static public final short EQL = 22;
+		static public final short IMPORT = 23;
+		static public final short PUBLIC = 24;
+		static public final short PLUS = 25;
+		static public final short TIMES = 26;
+		static public final short DIV = 27;
+		static public final short MOD = 28;
+		static public final short TYPE = 29;
+		static public final short MODULE = 30;
+		static public final short ELSE = 31;
+		static public final short EQEQ = 32;
+		static public final short NEQ = 33;
+		static public final short LT = 34;
+		static public final short LEQ = 35;
+		static public final short GT = 36;
+		static public final short GEQ = 37;
 	}
 
 	static final ParsingTables PARSING_TABLES = new ParsingTables(
-		"U9pDaMjIma0GX9iG7aaWyWWGGH04aN0DB#OvhV8Qlc7zPWoUmQtwfZlxOwhJA#and1I54Bx" +
-		"KKXpEQgkhdZeQQAH44wKgbMcXfVfQAzTMLzhheA7iZCEt2dTJcAd9l8QvtztuNC6jkmtSkT" +
-		"l1lRi7drNjAZNOBKMAoT4aIKwk8QaACitOdR0rPL$6fftw90yaaWRkHZ3MdZc1gT#LFkUmS" +
-		"BU4bRirRDnjVLgYuvF#JWJsHsreGGTYw482AJGWWnxyff5ov8nUSfrGwujqz4LhK7ZdifpX" +
-		"yz8V$WCjhKNyUzsavNwpFj5NT6cDMaw#dsjzCVsFr2VsjwterDxvGDV77ypMWum=");
+		"U9pDLbbm55KKFTsJXGm9cI2JX12I64CIGWXa93kGX914N01n5qKHnHrnmmqXeAAeG9KV$bZ" +
+		"bfwLbbOgWk4N5g0HnZ#26HX6NH0Gr8A32zNJtcwRJqvaQIwnYfiwxzvvxtjhztcj0hyLDc8" +
+		"FJqOhJC1qpC1EwxC0jk1MtOOJyAKyZ1wDGWj88tKgd3hvOT9YCk05rjQXnw2P5qKsqTGz6q" +
+		"JMYmTOreidMrIE4QJW5fw8Q5RW6ur6EJ2p0zKZ7iAZPZAZPx2ZP$2YvWYYvqQxSUMQkFvVd" +
+		"mHMPt12pZNDSkJ8F$GGFRfO7Tu47Tv47Dsz0xapNKvgFot45hiHLk1fZtLbP5w6lnybscrL" +
+		"O594$rkCKJB5da81434AA$0K$1YCPyKZ2$MHIiKmnHsPRfzxbPLXgFjMfQ4QBYFn0nifSWh" +
+		"DnDnx0xMp3Oj9mabtVMMiFRgOs86jb9$4RhaCMxiHi#HKto4xSXTbOJCro134Knybt68wHM" +
+		"8nS78yJK8XYL68Cpi0ud8YpS2xEb$Mua7KknboEuL9SXcl9ByIDk4D#n1Bv7cryJlTW1Ux3" +
+		"lTongx0Q6dIU676SiRK6EMg#ANnd$Hnrcj4pTwDRbzbFfyMaYoC6qbNpp3cY6nwJBYEAhfR" +
+		"FAQmp$B2ka3kocBkvX2jNolUyZAjdx8OGrt32$vOzchbOEQkDrl$Knj7ct4yfZszoFj$b0j" +
+		"u8gH7Pf0YcVvk1YFon7bSvPZ29EwEUZ9$dK1FFWuba9fFH#BSOvsojTrbJJpMBDsasOAwGb" +
+		"J7w6Sas6jY6nJGxwZjhMMFoiMwIMi5KrWgQNXBzeFBzZAozxITZw7FDieKQGvVEcoI99v21" +
+		"815WdG2vL2B0VoCpZUO8ZLxIoSTpnsgqm9es5ZmpUsdoYT54An47QEk9h#bdqcumT64mtan" +
+		"q4WU9RO0UJsXiHsXzbeQx77e24Q2cJt55Z0TPlfv6VWvjCeCw#ljfPwZSCCRpQOqnpbFSOD" +
+		"LtfOfJ#ez9JsHkWTBa4ejKdo75BM7Hufh7HcLN4DkTESMlTdDUeEvXzZzK#JkKRIQNhlozz" +
+		"8rrV9HsYE8U8$Om3ghuAVePH47qllGifJVMUeJY#BpqRCKV8APxZ74VDQDekud3z8rdCLxL" +
+		"znFvoWyHEKGvKUZeDq$PAg8apFEHRtBqiP9eSyQHuq2x8$#uWv$byETwr5leYjSfkrJPLUu" +
+		"##7l4LMUBkrr7RgiQKnTHhhZay3XPvBdquVVg8HRLaUrfdGFrvMgdsr6dHt5FEBXUnVNGtw" +
+		"NyFlgx7MqSKjg#MFeSU2p6Ew8bUl2gNwt3sU#$QFT9ZtclWVh98VdTj2pbe1oG$N3zv0$R#" +
+		"zOilx5Zdb3IRKTV4Tk9Bualv3FvLDhfRPEFMNuadV8ERQTibatojdJ8Mumwv4rvGpRAw$HV" +
+		"arUbNLwHb#KbUL5Ua0rccyzBbsmrlUTKBslbMUKzOvPTyebyA1$8#$AUl2jRo7nkyZrcsIj" +
+		"ye#HdsIs$oAv#i$h9BFVPyLxfureSDls$MSpaTry2xnAT0EyJ7sycdO1vEuKnXMTx4q$igT" +
+		"HMCUR#v3sZsIXt8CGsmcXWMyqcmFl1Hu1VJpe1Vl7u51A9U0LTmMVQiMpFG1dZ8iOL74C5w" +
+		"nfV5#F8jT1wePJQ6kPhgArcR60CkJfol0VubQZPA2HVI5iS5JxUMt6yjtJpxgfaN4bRGcxQ" +
+		"F#$oB2W=");
+
+	static final Action RETURN6 = new Action() {
+		public Symbol reduce(Symbol[] _symbols, int offset) {
+			return _symbols[offset + 6];
+		}
+	};
 
 	static final Action RETURN2 = new Action() {
 		public Symbol reduce(Symbol[] _symbols, int offset) {
@@ -66,9 +89,33 @@ public class Parser extends beaver.Parser {
 		}
 	};
 
-	static final Action RETURN37 = new Action() {
+	static final Action RETURN3 = new Action() {
 		public Symbol reduce(Symbol[] _symbols, int offset) {
-			return _symbols[offset + 37];
+			return _symbols[offset + 3];
+		}
+	};
+
+	static final Action RETURN9 = new Action() {
+		public Symbol reduce(Symbol[] _symbols, int offset) {
+			return _symbols[offset + 9];
+		}
+	};
+
+	static final Action RETURN4 = new Action() {
+		public Symbol reduce(Symbol[] _symbols, int offset) {
+			return _symbols[offset + 4];
+		}
+	};
+
+	static final Action RETURN7 = new Action() {
+		public Symbol reduce(Symbol[] _symbols, int offset) {
+			return _symbols[offset + 7];
+		}
+	};
+
+	static final Action RETURN5 = new Action() {
+		public Symbol reduce(Symbol[] _symbols, int offset) {
+			return _symbols[offset + 5];
 		}
 	};
 
@@ -83,10 +130,86 @@ public class Parser extends beaver.Parser {
 	public Parser() {
 		super(PARSING_TABLES);
 		actions = new Action[] {
-			Action.RETURN,	// [0] $goal = Module
-			RETURN2,	// [1] $goal = $Dummy Dummy; returns 'Dummy' although none is marked
-			Action.NONE,  	// [2] Module = 
-			RETURN37	// [3] Dummy = MODULE INT VOID IF ELSE WHILE RETURN BREAK BOOLEAN PUBLIC TRUE FALSE INT_LITERAL STRING_LITERAL ID TYPE IMPORT PLUS MINUS TIMES DIV MOD EQEQ NEQ LEQ GEQ LT GT LBRACKET RPAREN COMMA RCURLY LCURLY SEMICOLON RBRACKET LPAREN EQL; returns 'EQL' although none is marked
+			RETURN6,	// [0] Module = MODULE ID LCURLY Imports Declarations RCURLY; returns 'RCURLY' although none is marked
+			RETURN2,	// [1] Imports = Import Imports; returns 'Imports' although none is marked
+			Action.NONE,  	// [2] Imports = 
+			RETURN3,	// [3] Import = IMPORT ID SEMICOLON; returns 'SEMICOLON' although none is marked
+			RETURN2,	// [4] Declarations = Declaration Declarations; returns 'Declarations' although none is marked
+			Action.NONE,  	// [5] Declarations = 
+			Action.RETURN,	// [6] Declaration = Function
+			Action.RETURN,	// [7] Declaration = Field
+			Action.RETURN,	// [8] Declaration = Type
+			RETURN9,	// [9] Function = Accessibility TypeName ID LPAREN ParameterList RPAREN LCURLY StatementList RCURLY; returns 'RCURLY' although none is marked
+			RETURN4,	// [10] Field = Accessibility TypeName ID SEMICOLON; returns 'SEMICOLON' although none is marked
+			RETURN6,	// [11] Type = Accessibility TYPE ID EQL STRING_LITERAL SEMICOLON; returns 'SEMICOLON' although none is marked
+			Action.RETURN,	// [12] Accessibility = PUBLIC
+			Action.NONE,  	// [13] Accessibility = 
+			Action.RETURN,	// [14] TypeName = PrimitiveType
+			Action.RETURN,	// [15] TypeName = ArrayType
+			Action.RETURN,	// [16] TypeName = ID
+			Action.RETURN,	// [17] PrimitiveType = VOID
+			Action.RETURN,	// [18] PrimitiveType = BOOLEAN
+			Action.RETURN,	// [19] PrimitiveType = INT
+			RETURN3,	// [20] ArrayType = ID LBRACKET RBRACKET; returns 'RBRACKET' although none is marked
+			RETURN3,	// [21] ArrayType = ArrayType LBRACKET RBRACKET; returns 'RBRACKET' although none is marked
+			RETURN3,	// [22] ArrayType = PrimitiveType LBRACKET RBRACKET; returns 'RBRACKET' although none is marked
+			RETURN2,	// [23] Parameter = TypeName ID; returns 'ID' although none is marked
+			RETURN2,	// [24] ParameterList = Parameter ParameterTail; returns 'ParameterTail' although none is marked
+			Action.NONE,  	// [25] ParameterList = 
+			RETURN3,	// [26] ParameterTail = COMMA Parameter ParameterTail; returns 'ParameterTail' although none is marked
+			Action.NONE,  	// [27] ParameterTail = 
+			RETURN2,	// [28] StatementList = Statement StatementList; returns 'StatementList' although none is marked
+			Action.NONE,  	// [29] StatementList = 
+			RETURN3,	// [30] Statement = TypeName ID SEMICOLON; returns 'SEMICOLON' although none is marked
+			RETURN3,	// [31] Statement = LCURLY StatementList RCURLY; returns 'RCURLY' although none is marked
+			RETURN7,	// [32] Statement = IF LPAREN Expression RPAREN Statement ELSE Statement; returns 'Statement' although none is marked
+			RETURN5,	// [33] Statement = IF LPAREN Expression RPAREN Statement; returns 'Statement' although none is marked
+			RETURN5,	// [34] Statement = WHILE LPAREN Expression RPAREN Statement; returns 'Statement' although none is marked
+			RETURN2,	// [35] Statement = BREAK SEMICOLON; returns 'SEMICOLON' although none is marked
+			RETURN2,	// [36] Statement = RETURN SEMICOLON; returns 'SEMICOLON' although none is marked
+			RETURN3,	// [37] Statement = RETURN Expression SEMICOLON; returns 'SEMICOLON' although none is marked
+			RETURN2,	// [38] Statement = Expression SEMICOLON; returns 'SEMICOLON' although none is marked
+			Action.RETURN,	// [39] Expression = Assignment
+			Action.RETURN,	// [40] Expression = RHSExpression
+			RETURN3,	// [41] Assignment = LHSExpression EQL Expression; returns 'Expression' although none is marked
+			RETURN2,	// [42] LHSExpression = ID LHSExpressionTail; returns 'LHSExpressionTail' although none is marked
+			RETURN4,	// [43] LHSExpressionTail = LBRACKET Expression RBRACKET LHSExpressionTail; returns 'LHSExpressionTail' although none is marked
+			Action.NONE,  	// [44] LHSExpressionTail = 
+			Action.RETURN,	// [45] RHSExpression = ArithmeticExpression
+			RETURN3,	// [46] RHSExpression = ArithmeticExpression ComparisonOp ArithmeticExpression; returns 'ArithmeticExpression' although none is marked
+			Action.RETURN,	// [47] ComparisonOp = EQEQ
+			Action.RETURN,	// [48] ComparisonOp = NEQ
+			Action.RETURN,	// [49] ComparisonOp = LT
+			Action.RETURN,	// [50] ComparisonOp = LEQ
+			Action.RETURN,	// [51] ComparisonOp = GT
+			Action.RETURN,	// [52] ComparisonOp = GEQ
+			RETURN2,	// [53] ArithmeticExpression = Term ArithmeticExpressionTail; returns 'ArithmeticExpressionTail' although none is marked
+			RETURN3,	// [54] ArithmeticExpressionTail = AdditiveOp Term ArithmeticExpressionTail; returns 'ArithmeticExpressionTail' although none is marked
+			Action.NONE,  	// [55] ArithmeticExpressionTail = 
+			Action.RETURN,	// [56] AdditiveOp = PLUS
+			Action.RETURN,	// [57] AdditiveOp = MINUS
+			RETURN2,	// [58] Term = Factor TermTail; returns 'TermTail' although none is marked
+			RETURN3,	// [59] TermTail = MultiplicativeOp Factor TermTail; returns 'TermTail' although none is marked
+			Action.NONE,  	// [60] TermTail = 
+			Action.RETURN,	// [61] MultiplicativeOp = TIMES
+			Action.RETURN,	// [62] MultiplicativeOp = DIV
+			Action.RETURN,	// [63] MultiplicativeOp = MOD
+			RETURN2,	// [64] Factor = MINUS Factor; returns 'Factor' although none is marked
+			Action.RETURN,	// [65] Factor = PrimaryExpr
+			Action.RETURN,	// [66] PrimaryExpr = LHSExpression
+			Action.RETURN,	// [67] PrimaryExpr = FunctionCall
+			Action.RETURN,	// [68] PrimaryExpr = ArrayExpression
+			Action.RETURN,	// [69] PrimaryExpr = STRING_LITERAL
+			Action.RETURN,	// [70] PrimaryExpr = INT_LITERAL
+			Action.RETURN,	// [71] PrimaryExpr = TRUE
+			Action.RETURN,	// [72] PrimaryExpr = FALSE
+			RETURN3,	// [73] PrimaryExpr = LPAREN Expression RPAREN; returns 'RPAREN' although none is marked
+			RETURN4,	// [74] FunctionCall = ID LPAREN ExpressionList RPAREN; returns 'RPAREN' although none is marked
+			RETURN2,	// [75] ExpressionList = Expression ExpressionTail; returns 'ExpressionTail' although none is marked
+			Action.NONE,  	// [76] ExpressionList = 
+			RETURN3,	// [77] ExpressionTail = COMMA Expression ExpressionTail; returns 'ExpressionTail' although none is marked
+			Action.NONE,  	// [78] ExpressionTail = 
+			RETURN4	// [79] ArrayExpression = LBRACKET Expression ExpressionTail RBRACKET; returns 'RBRACKET' although none is marked
 		};
 	}
 

@@ -23,7 +23,7 @@
 %goal Module;
 
 // temporary declaration, you can remove this once you have written all other rules
-// %goal Dummy;
+//%goal Dummy;
 
 /* TODO: Flesh out the rule for Module, and add rules for other nonterminals. Here is an example
          of a rule you may want to add:
@@ -37,10 +37,13 @@ Module = MODULE ID LCURLY Imports Declarations RCURLY;
 Imports = Import Imports
 		|
 		;
+		
 Import = IMPORT ID SEMICOLON ;
+
 Declarations = Declaration Declarations
 		|
 		;
+		
 Declaration = Function
 		| Field
 		| Type
@@ -66,7 +69,14 @@ PrimitiveType = VOID
 		| INT
 		;
 		
-ArrayType = TypeName LBRACKET RBRACKET ;  /*LALR conflict -- need to expand the nonterminal*/
+/*LALR conflict -- need to expand the nonterminal*/
+
+ArrayType = ID LBRACKET RBRACKET
+		  | ArrayType LBRACKET RBRACKET
+		  | PrimitiveType LBRACKET RBRACKET
+		  ;
+		  
+Parameter = TypeName ID;  /* conflict? */
 
 ParameterList = Parameter ParameterTail   
 		|
@@ -76,7 +86,7 @@ ParameterTail = COMMA Parameter ParameterTail
 		|
 		;		
 
-Parameter = TypeName ID;  /* conflict? */
+
 
 StatementList = Statement StatementList
 		|
@@ -95,23 +105,29 @@ Statement = TypeName ID SEMICOLON
  
 // An expression is either an assignment or a right hand side expression.
 Expression = Assignment
-		| RHSExpreesion
+		| RHSExpression
 		;
 // An assignment is a left hand side expression, followed by a single equals sign, followed by an expression.
-Assignment = LHSExpression EQEQ Expression ;
+Assignment = LHSExpression EQL Expression ;
 // A left hand side expression is either an identifier or an array access. 
-LHSExpression = ID
-		| ArrayAccess 
-		;
+// LHSExpression = ID
+// 		| ArrayAccess 
+// 		;
+LHSExpression = ID LHSExpressionTail
+	;
+
+LHSExpressionTail = LBRACKET Expression RBRACKET LHSExpressionTail
+	|
+	; 
+
 //An array access is a left hand side expression, followed by an opening bracket, followed by an expression, 
 // followed by a closing bracket.
-ArrayAccess = LHSExpression LBRACKET Expression RBRACKET;
+//ArrayAccess = LHSExpression LBRACKET Expression RBRACKET;
 // A right hand side expression is an arithmetic expression, optionally followed by a comparison operator and
 // another arithmetic expression. 
-RHSExpreesion = ArithmeticExpression RHSExTail;
-RHSExTail = ComparisonOp ArithmeticExpression
-		|
-		;
+RHSExpression = ArithmeticExpression
+			  | ArithmeticExpression ComparisonOp ArithmeticExpression
+			  ;
 // A comparison operator is one of EQEQ, NEQ, LT, LEQ, GT, GEQ.
 ComparisonOp = EQEQ
 		| NEQ
@@ -123,18 +139,31 @@ ComparisonOp = EQEQ
 // An arithmetic expression is either an arithmetic expression, followed by an additive operator, followed by a
 // term; or just a term. 
 
-ArithmeticExpression = ArithmeticExpression AdditiveOp Term
-		| Term
-		;
+// ArithmeticExpression = ArithmeticExpression AdditiveOp Term
+// 		| Term
+// 		;
+ArithmeticExpression = Term ArithmeticExpressionTail
+					 ;
+ArithmeticExpressionTail = AdditiveOp Term ArithmeticExpressionTail
+						 |
+						 ;
+
 		
 // An additive operator is either PLUS or MINUS.
 AdditiveOp = PLUS
 		| MINUS
 		;
 // A term is either a term, followed by a multiplicative operator, followed by a factor; or just a factor. 
-Term = Term MultiplicativeOp Factor 
-		| Factor
-		;
+// Term = Term MultiplicativeOp Factor 
+// 		| Factor
+// 		;
+Term = Factor TermTail
+	 ;
+TermTail = MultiplicativeOp Factor TermTail
+		 |
+		 ;
+
+
 // A multiplicative operator is one of TIMES, DIV, MOD.
 MultiplicativeOp = TIMES
 		| DIV
@@ -163,21 +192,18 @@ PrimaryExpr = LHSExpression
 //FunctionCall : an identifier, followed by an opening parenthesis, 
 //followed by a possibly empty list of expressions separated by comma, followed by a closing parenthesis;	
 FunctionCall = ID LPAREN ExpressionList RPAREN;
-ExpressionTail = COMMA Expression ExpressionTail
-		|
-		;
 ExpressionList = Expression ExpressionTail
 		|
 		;
+ExpressionTail = COMMA Expression ExpressionTail
+		|
+		;
+
 // an array expression: an opening bracket, followed by a non-empty list of expressions separated by
 // comma, followed by a closing bracket;
 ArrayExpression = LBRACKET Expression ExpressionTail RBRACKET;
 /* Dummy rule to make the lexer compile. Remove this once you have written all other rules. */	  
-Dummy = MODULE INT VOID IF ELSE WHILE RETURN BREAK BOOLEAN PUBLIC TRUE FALSE INT_LITERAL STRING_LITERAL ID TYPE IMPORT
-           PLUS MINUS TIMES DIV MOD EQEQ NEQ LEQ GEQ LT GT LBRACKET RPAREN COMMA RCURLY LCURLY SEMICOLON RBRACKET LPAREN EQL; 
+// Dummy = MODULE INT VOID IF ELSE WHILE RETURN BREAK BOOLEAN PUBLIC TRUE FALSE INT_LITERAL STRING_LITERAL ID TYPE IMPORT
+//            PLUS MINUS TIMES DIV MOD EQEQ NEQ LEQ GEQ LT GT LBRACKET RPAREN COMMA RCURLY LCURLY SEMICOLON RBRACKET LPAREN EQL; 
  
-/**/
-
-/* Dummy rule to make the lexer compile. Remove this once you have written all other rules. */	  
-Dummy = MODULE INT VOID IF ELSE WHILE RETURN BREAK BOOLEAN PUBLIC TRUE FALSE INT_LITERAL STRING_LITERAL ID TYPE IMPORT
-           PLUS MINUS TIMES DIV MOD EQEQ NEQ LEQ GEQ LT GT LBRACKET RPAREN COMMA RCURLY LCURLY SEMICOLON RBRACKET LPAREN EQL;
+// /**/
